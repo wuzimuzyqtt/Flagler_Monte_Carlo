@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import numpy_financial as npf
+import matplotlib.pyplot as plt
 
 # Streamlit UI
 st.title('Real Estate Investment Monte Carlo Simulation')
@@ -29,11 +30,23 @@ def monte_carlo_irr(initial_investment, monthly_payment, sale_price, rate, perio
         irr_values.append(irr)
     return irr_values
 
+
+
+# Assuming irr_results is a list or numpy array of IRR values
 if st.button('Run Simulation'):
     irr_results = monte_carlo_irr(initial_investment, monthly_payment, sale_price, rate, periods, simulations)
     irr_mean = np.mean(irr_results)
     st.write(f"Simulation Results: Mean IRR = {irr_mean*100:.2f}%")
-    st.hist_chart(irr_results)
+
+    # Plotting the histogram
+    plt.figure(figsize=(10, 6))
+    plt.hist(irr_results, bins=20, color='blue', edgecolor='black')
+    plt.title('IRR Distribution')
+    plt.xlabel('Internal Rate of Return (IRR)')
+    plt.ylabel('Frequency')
+    
+    st.pyplot(plt)
+
 
 # Additional Dependencies
 # Note: numpy_financial is used for financial calculations like IRR.
